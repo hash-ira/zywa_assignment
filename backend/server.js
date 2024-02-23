@@ -1,6 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+
 const CardStatus = require('./models/cardStatusModel');
+const { importData } = require('./models/data.js');
 const connectDB = require('./config/mongoDB.js');
 const dotenv = require('dotenv');
 
@@ -9,6 +11,12 @@ connectDB();
 
 const app = express();
 app.use(bodyParser.json());
+
+//importing Data from csv
+importData( './data/Sample Card Status Info - Pickup.csv', 'picked up');
+importData('./data/Sample Card Status Info - Delivery exceptions.csv', 'delivery exception');
+importData('./data/Sample Card Status Info - Delivered.csv', 'delivered');
+importData('./data/Sample Card Status Info - Returned.csv', 'returned');
 
 
 app.get('/get_card_status', (req, res) => {
