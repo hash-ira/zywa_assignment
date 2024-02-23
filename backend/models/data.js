@@ -27,23 +27,37 @@ function importData(filePath, status) {
           lastUpdate = moment(row.Timestamp, ['YYYY-MM-DDTHH:mm:ssZ', 'DD-MM-YYYY HH:mm' , 'DD-MM-YYYY hh:mm A' , 'DD-MM-YYYY h:mm A']).toDate();
         } else {
           lastUpdate = new Date(row.Timestamp);
-        }
-            
-        const cardStatus = new CardStatus({
-          ID: row[ID],  
-          userContact: phoneNumber,
-          cardId: row['Card ID'],
-          status: status,
-          lastUpdate: lastUpdate,
-          comment: row.Comment || ''
-        });
+          }
+
+          const existingRecord = await CardStatus.findOne({
+            ID: row[ID],  
+            userContact: phoneNumber,
+            cardId: row['Card ID'],
+            status: status,
+            lastUpdate: lastUpdate,
+          });
         
-        try {
-          await cardStatus.save();
-          console.log(`Successfully imported data for card with ID ${row['Card ID']}`);
-        } catch (err) {
-          console.error(`Error importing data for card with ID ${row['Card ID']}: ${err.message}`);
-        }
+        if (!existingRecord) {
+          
+          const cardStatus = new CardStatus({
+            ID: row[ID],  
+            userContact: phoneNumber,
+            cardId: row['Card ID'],
+            status: status,
+            lastUpdate: lastUpdate,
+            comment: row.Comment || ''
+          });
+            
+            
+          
+          try {
+            await cardStatus.save();
+            console.log(`Successfully imported data for card with ID ${row['Card ID']}`);
+          } catch (err) {
+            console.error(`Error importing data for card with ID ${row['Card ID']}: ${err.message}`);
+          }
+          }
+          
       })
       .on('end', () => {
         console.log('CSV file processed' + filePath);
