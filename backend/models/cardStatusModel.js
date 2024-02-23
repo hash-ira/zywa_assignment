@@ -19,7 +19,7 @@ const cardStatusSchema = new mongoose.Schema({
     },
     lastUpdate: {
         type: Date,
-        default: Date.now
+        required : true
     },
     comment: String
 });

@@ -16,7 +16,7 @@ app.use(bodyParser.json());
 
 //importing Data from csv
 importData( './data/Sample Card Status Info - Pickup.csv', 'picked up');
-importData('./data/Sample Card Status Info - Delivery exceptions.csv', 'delivery exception');
+importData('./data/Sample Card Status Info - Delivery exceptions.csv', 'delivery attempted');
 importData('./data/Sample Card Status Info - Delivered.csv', 'delivered');
 importData('./data/Sample Card Status Info - Returned.csv', 'returned');
 
@@ -51,6 +51,8 @@ app.post('/get_card_status', async (req, res) => {
         if (cardStatusArr.length === 0) {
             return res.status(404).json({ error: 'Card status not found' });
         }
+
+        cardStatusArr.sort((a, b) => a.lastUpdate - b.lastUpdate)
 
         res.json(cardStatusArr);
     }catch (error) {

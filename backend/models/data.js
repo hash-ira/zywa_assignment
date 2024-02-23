@@ -24,17 +24,17 @@ function importData(filePath, status) {
           
         let lastUpdate;
         if (row.Timestamp.includes('-')) {
-          lastUpdate = moment(row.Timestamp, ['YYYY-MM-DDTHH:mm:ssZ', 'DD-MM-YYYY HH:mm' , 'DD-MM-YYYY hh:mm A' , 'DD-MM-YYYY h:mm A']).toDate();
+          lastUpdate = moment(row.Timestamp, ['YYYY-MM-DDTHH:mm:ssZ', 'DD-MM-YYYY HH:mm', 'DD-MM-YYYY hh:mm A', 'DD-MM-YYYY h:mm A']).toDate();
         } else {
           lastUpdate = new Date(row.Timestamp);
-          }
+        }
 
           const existingRecord = await CardStatus.findOne({
             ID: row[ID],  
             userContact: phoneNumber,
             cardId: row['Card ID'],
             status: status,
-            lastUpdate: lastUpdate,
+            lastUpdate: lastUpdate
           });
         
         if (!existingRecord) {
