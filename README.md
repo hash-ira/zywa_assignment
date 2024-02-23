@@ -44,6 +44,7 @@ Developed an internal API `/get_card_status` to retrieve the current delivery st
 To deploy this project:
 
 - Clone the repository to your local machine.
+- Ensure that the Node.js version is `18.17.1`.
 - Set up the .env file with MONGO URI from the Mongo Atlas Cloud.
 - Start the server with the below command in the command line.
 ```bash
